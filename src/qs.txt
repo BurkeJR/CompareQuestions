@@ -1,0 +1,5 @@
+1. Find the interval of convergence of the following series:
+2. Find a power series representation of the function
+3. Answer the following questions
+4. Make sure that you show enough work that 
+5. No credit will be given for insufficiently supported answers.
