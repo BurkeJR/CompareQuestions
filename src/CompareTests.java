@@ -15,7 +15,6 @@ public class CompareTests {
 	
 	private Test[] tests;
 	private double percentage;
-	private String outputFile = "results.csv";
 	
 	/**
 	 * Creates a new CompareTests with the given array of Tests.
@@ -37,7 +36,7 @@ public class CompareTests {
 		this.percentage = percentage;
 	}
 	
-	public void run() {
+	public String run() {
 		StringBuilder sb = new StringBuilder("");
 		
 		//each test is compared with the all of the other tests
@@ -81,10 +80,12 @@ public class CompareTests {
 			//add extra line to separate me from the next test header
 			sb.append("\n");
 		}
-		System.out.println(sb.toString());
+		
+		
+		return sb.toString();
 	}
 	
-	public String compareTests(Test t1, Test t2) {
+	private String compareTests(Test t1, Test t2) {
 		StringBuilder result = new StringBuilder("");
 		int size1 = t1.getQuestionCount();
 		int size2 = t2.getQuestionCount();
@@ -118,31 +119,53 @@ public class CompareTests {
 	}
 	
 	private boolean compareQuestions(Question q1, Question q2) {
-		double total = 0;
+		double q2TotalWords = 0;
 		double related = 0;
 		
+		//create ArrayList to store all words in question 1's question and answers
 		ArrayList<String> words1 = new ArrayList<>();
 		Scanner read1 = new Scanner(q1.getQuestion());
 		
+		//add all of q1's question's words
 		while(read1.hasNext()) {
 			words1.add(read1.next());
 		}
 		
+		//add all of q1's answers' words
+		for(int a = 0; a < q1.answers.size(); a++) {
+			read1 = new Scanner(q1.answers.get(a));
+			while(read1.hasNext()) {
+				words1.add(read1.next());
+			}
+		}
+		
 		Scanner read2 = new Scanner(q2.getQuestion());
 		
+		//compare all words in q2's question
 		while(read2.hasNext()) {
 			if(words1.contains(read2.next())) {
 				related++;
 			}
-			total++;
+			q2TotalWords++;
+		}
+		
+		//compare all words in q2's answers
+		for(int a = 0; a < q2.answers.size(); a++) {
+			read2 = new Scanner(q2.answers.get(a));
+			while(read2.hasNext()) {
+				if(words1.contains(read2.next())) {
+					related++;
+				}
+				q2TotalWords++;
+			}
 		}
 		
 		read1.close();
 		read2.close();
 		
-		total = (total + words1.size()) / 2;
+		q2TotalWords = (q2TotalWords + words1.size()) / 2;
 		
-		return (related/total) >= percentage;
+		return (related/q2TotalWords) >= percentage;
 		
 	}
 }
