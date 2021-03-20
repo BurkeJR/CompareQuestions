@@ -1,3 +1,4 @@
+package CompareQuestions;
 import java.util.ArrayList;
 import java.util.Scanner;
 
